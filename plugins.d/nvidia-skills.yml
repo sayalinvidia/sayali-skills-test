@@ -25,9 +25,7 @@ default_prompts:
 # Reproduced under plugins/<name>/skills/<skill-basename>/ in the form
 # selected by `skill_files:` (defined in plugins.d/_defaults.yml).
 include_skills:
-  - skills/cuopt/cuopt-numerical-optimization-api-python/
-  - skills/cuopt/cuopt-install/
-  - skills/NemoClaw/nemoclaw-user-get-started/
+  - skills/cuopt/cuopt-routing-api-python/
 
 # Override default (`copy`) → ship symlinks to ../../../skills/<...>/.
 # No duplicated SKILL.md, plugin tree stays in sync automatically.
