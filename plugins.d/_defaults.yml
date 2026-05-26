@@ -39,7 +39,7 @@ capabilities:
 # or both self-hosted marketplaces, set marketplace_enabled.{claude,codex}: false
 # in that plugin's yaml.
 
-# How `include_skills` are materialized under plugins/<name>/skills/.
+# How `include_skills` show up on disk under plugins/<name>/skills/.
 #   copy     - rsync each skill into the plugin tree. Real files. Required
 #              for Codex local-marketplace install (codex plugin add
 #              silently drops symlinks). Default.
@@ -47,4 +47,4 @@ capabilities:
 #              tree. No duplicated SKILL.md. Works for Claude install and
 #              `npx skills add`; NOT compatible with Codex local install.
 # Override per-plugin in plugins.d/<name>.yml when needed.
-materialize_skills: copy
+skill_files: copy

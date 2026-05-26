@@ -21,26 +21,20 @@ default_prompts:
   - "Deploy or debug an NVIDIA RAG Blueprint."
   - "Search a video archive with VSS."
 
-# Curated subset of skills from the canonical ./skills/ catalog. Materialized
-# under plugins/<name>/skills/<skill-basename>/ via the strategy selected
-# by `materialize_skills:` (see below).
+# Curated subset of skills from the canonical ./skills/ catalog.
+# Reproduced under plugins/<name>/skills/<skill-basename>/ in the form
+# selected by `skill_files:` (defined in plugins.d/_defaults.yml; override
+# here as `skill_files: symlink` if this plugin should ship symlinks).
 include_skills:
   - skills/cuopt/cuopt-numerical-optimization-api-python/
   - skills/cuopt/cuopt-install/
   - skills/NemoClaw/nemoclaw-user-get-started/
 
-# `symlink` keeps the plugin tree as relative symlinks back into the
-# canonical ./skills/ catalog — no duplicated SKILL.md content. Works for
-# Claude install and `npx skills add`. Codex 0.132 silently drops symlinks
-# during `codex plugin add`; flip this to `copy` if you need Codex
-# local-marketplace install to ship real files.
-materialize_skills: symlink
-
 # Inherits from plugins.d/_defaults.yml:
 #   version, author, homepage, repository, license,
 #   brand_color, capabilities
 
-# Published in both self-hosted marketplace.json files (default behaviour).
+# By default this plugin is added (true) in both self-hosted marketplace.json files. Uncomment to opt out.
 # marketplace_enabled:
 #   claude: false
 #   codex: false

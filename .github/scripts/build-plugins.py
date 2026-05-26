@@ -178,7 +178,7 @@ def materialize_skills(
     """
     if mode not in VALID_MATERIALIZATIONS:
         die(
-            f"plugin {plugin_name!r}: invalid materialize_skills={mode!r} "
+            f"plugin {plugin_name!r}: invalid skill_files={mode!r} "
             f"(allowed: {', '.join(VALID_MATERIALIZATIONS)})"
         )
     plugin_dir = PLUGINS_DIR / plugin_name
@@ -300,7 +300,7 @@ def build_catalog_plugin(spec: dict[str, Any]) -> str:
     plugin_dir.mkdir(parents=True, exist_ok=True)
     log(f"── catalog plugin: {name} ──")
 
-    mode = spec.get("materialize_skills", "copy")
+    mode = spec.get("skill_files", "copy")
     materialize_skills(name, spec.get("include_skills", []), mode=mode)
 
     write_json(plugin_dir / ".claude-plugin" / "plugin.json", render_claude_plugin_json(spec))
@@ -338,7 +338,7 @@ def build_curated_plugin(plugin_dir: Path) -> str:
     skills = spec.get("skills") or []
     if not skills:
         die(f"{manifest_path}: 'skills' list is empty")
-    mode = spec.get("materialize_skills", "copy")
+    mode = spec.get("skill_files", "copy")
     materialize_skills(name, skills, mode=mode)
     return name
 

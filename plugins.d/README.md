@@ -26,9 +26,9 @@ only requires editing the `include_skills:` list and re-running:
 .github/scripts/build-plugins.sh
 ```
 
-## `materialize_skills:` — copy vs symlink
+## `skill_files:` — copy vs symlink
 
-Each plugin selects how `include_skills` are reproduced under
+Each plugin selects what kind of files end up under
 `plugins/<name>/skills/`:
 
 | Mode | What's on disk | Use when |
@@ -37,7 +37,7 @@ Each plugin selects how `include_skills` are reproduced under
 | `symlink` | relative symlinks → `../../../skills/<Product>/<skill>` | shipping to Claude only or to `npx skills add` consumers; avoids duplication |
 
 The default lives in [`_defaults.yml`](./_defaults.yml); override per
-plugin by setting `materialize_skills: symlink` (or `copy`) in
+plugin by setting `skill_files: symlink` (or `copy`) in
 `plugins.d/<name>.yml`.
 
 ## Adding a plugin
