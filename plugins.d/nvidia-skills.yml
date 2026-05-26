@@ -23,12 +23,18 @@ default_prompts:
 
 # Curated subset of skills from the canonical ./skills/ catalog.
 # Reproduced under plugins/<name>/skills/<skill-basename>/ in the form
-# selected by `skill_files:` (defined in plugins.d/_defaults.yml; override
-# here as `skill_files: symlink` if this plugin should ship symlinks).
+# selected by `skill_files:` (defined in plugins.d/_defaults.yml).
 include_skills:
   - skills/cuopt/cuopt-numerical-optimization-api-python/
   - skills/cuopt/cuopt-install/
   - skills/NemoClaw/nemoclaw-user-get-started/
+
+# Override default (`copy`) → ship symlinks to ../../../skills/<...>/.
+# No duplicated SKILL.md, plugin tree stays in sync automatically.
+# Works for `claude plugin install` and `npx skills add`. Currently NOT
+# compatible with `codex plugin add` (Codex 0.132 silently drops
+# symlinks during install) — flip back to `copy` to test Codex.
+skill_files: symlink
 
 # Inherits from plugins.d/_defaults.yml:
 #   version, author, homepage, repository, license,
