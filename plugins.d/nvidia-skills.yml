@@ -1,0 +1,38 @@
+name: nvidia-skills
+
+description: Build with NVIDIA agent skills.
+
+display_name: NVIDIA
+short_description: Provide agentic guidance in your NVIDIA related workflows.
+long_description: A curated plugin bundling verified skills to provide guidance in your NVIDIA related workflows.
+
+category: Developer Tools
+logo: ./assets/nvidia.png
+composer_icon: ./assets/nvidia.png
+# screenshots: []   # optional; supply ./assets/*.png paths when we have any
+
+keywords:
+  - nvidia
+  - agent-skills
+  - gpu
+
+default_prompts:
+  - "Solve an optimization problem with cuOpt."
+  - "Deploy or debug an NVIDIA RAG Blueprint."
+  - "Search a video archive with VSS."
+
+# Curated subset of skills from the canonical ./skills/ catalog.
+# Reproduced under plugins/<name>/skills/<skill-basename>/ in the form
+# selected by `skill_files:` (defined in plugins.d/_defaults.yml).
+include_skills:
+  - skills/cuopt/cuopt-routing-api-python/
+  - skills/cuopt/cuopt-user-rules/
+
+# Inherits from plugins.d/_defaults.yml:
+#   version, author, homepage, repository, license,
+#   brand_color, capabilities
+
+# By default this plugin is added (true) in both self-hosted marketplace.json files. Uncomment to opt out.
+# marketplace_enabled:
+#   claude: false
+#   codex: false
