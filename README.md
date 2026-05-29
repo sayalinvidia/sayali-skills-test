@@ -97,8 +97,10 @@ For non-interactive installs, global installs, agent-specific installs, updates,
 <!-- skills-table-start -->
 | Product | Description | Skills | Catalog | Source | Version |
 |---------|-------------|:------:|---------|--------|---------|
-| **AIQ** | NVIDIA AI-Q Blueprint - deploy local AI-Q services and run shallow or deep research workflows as agent skills. | 2 | [`skills/aiq-research/`](skills/aiq-research) | [Source](https://github.com/NVIDIA-AI-Blueprints/aiq/tree/develop/skills/aiq-research) | [`66b009e`](https://github.com/NVIDIA-AI-Blueprints/aiq/commit/66b009e3b28219eb2a09910c347d84c0675c2028) · 2026-05-27 |
-| **cuOpt** | GPU-accelerated optimization — vehicle routing, linear programming, quadratic programming, installation, server deployment, and developer tools. | 10 | [`skills/cuopt/`](skills/cuopt) | [Source](https://github.com/NVIDIA/cuopt/tree/main/skills) | [`bcac42e`](https://github.com/NVIDIA/cuopt/commit/bcac42e14ed296d765c38770628336dbd4e3efd0) · 2026-05-27 |
+| **AIQ** | NVIDIA AI-Q Blueprint - deploy local AI-Q services and run shallow or deep research workflows as agent skills. | 2 | [`skills/aiq-research/`](skills/aiq-research) | [Source](https://github.com/NVIDIA-AI-Blueprints/aiq/tree/develop/skills/aiq-research) | — |
+| **cuOpt** | GPU-accelerated optimization — vehicle routing, linear programming, quadratic programming, installation, server deployment, and developer tools. | 10 | [`skills/cuopt/`](skills/cuopt) | [Source](https://github.com/NVIDIA/cuopt/tree/main/skills) | — |
+| **Omniverse** | Omniverse USD/Kit workflows — CAD-to-SimReady conversion, realtime viewer orchestration, and USD performance tuning. | 3 | [`omniverse-cad-to-simready/`](skills/omniverse-cad-to-simready) · [`omniverse-realtime-viewer/`](skills/omniverse-realtime-viewer) · [`omniverse-usd-performance-tuning/`](skills/omniverse-usd-performance-tuning) | — | — |
+| **Physical AI** | Physical AI development — infrastructure setup for synthetic data generation, resilient scaling, and neural reconstruction (NuRec/NRE). | 2 | [`physical-ai-infrastructure-setup-and-resilient-scaling/`](skills/physical-ai-infrastructure-setup-and-resilient-scaling) · [`physical-ai-neural-reconstruction/`](skills/physical-ai-neural-reconstruction) | — | — |
 <!-- skills-table-end -->
 
 ---
@@ -112,6 +114,8 @@ For skill-related issues, feature requests, new skill ideas, discussions, and co
 |---------|--------|-------------|--------------|----------|
 | **AIQ** | [Issues](https://github.com/NVIDIA-AI-Blueprints/aiq/issues) | [Discussions](https://github.com/NVIDIA-AI-Blueprints/aiq/discussions) | [Contributing](https://github.com/NVIDIA-AI-Blueprints/aiq/blob/develop/CONTRIBUTING.md) | [Security](https://github.com/NVIDIA-AI-Blueprints/aiq/blob/develop/SECURITY.md) |
 | **cuOpt** | [Issues](https://github.com/NVIDIA/cuopt/issues) | [Discussions](https://github.com/NVIDIA/cuopt/discussions) | [Contributing](https://github.com/NVIDIA/cuopt/blob/main/CONTRIBUTING.md) | [Security](https://github.com/NVIDIA/cuopt/blob/main/SECURITY.md) |
+| **Omniverse** | — | — | — | — |
+| **Physical AI** | — | — | — | — |
 <!-- help-table-end -->
 
 For issues with **this catalog repo itself** (README, structure, listing a new product): [open an issue here](../../issues).
