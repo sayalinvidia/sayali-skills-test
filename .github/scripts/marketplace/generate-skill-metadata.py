@@ -37,7 +37,6 @@ import os
 import re
 import sys
 import textwrap
-import time
 from pathlib import Path
 from typing import Any, Iterable
 
@@ -422,10 +421,6 @@ def build_ai_client(allow_ai: bool):
     return _AIClient()
 
 
-_RETRY_ATTEMPTS = 3
-_RETRY_BASE_SECONDS = 1  # doubles on each retry: 1s, 2s, 4s
-
-
 class _AIClient:
     def __init__(self) -> None:
         self.api_key = os.environ.get("INFERENCE_API_KEY")
@@ -439,23 +434,9 @@ class _AIClient:
         self,
         skill: Skill,
         component: dict | None,
-        requested_fields: list[str],
+        missing_fields: list[str],
         taxonomy: dict,
-        current_values: dict | None = None,
     ) -> dict:
-        """Ask the model to assign or review the given metadata fields.
-
-        Modes:
-        - Fill mode (``current_values is None``): every ``requested_fields``
-          entry is treated as missing; the model picks a value for each.
-        - Amend mode (``current_values`` provided): the model is shown the
-          existing value for each requested field and asked to either keep it
-          (return it verbatim) or change it to a better-fitting controlled
-          value if the new skill content warrants it.
-        Validation is identical in both modes — every requested key must be
-        returned with a non-empty string from the controlled vocabulary, no
-        extra keys, no ``UNRESOLVED`` placeholders.
-        """
         if not self.api_key:
             raise EnrichmentError(
                 "AI enrichment needed but INFERENCE_API_KEY is not set."
@@ -466,7 +447,6 @@ class _AIClient:
                 "the model name (no default is provided)."
             )
 
-        amend_mode = current_values is not None
         system = textwrap.dedent(
             """
             You assign NVIDIA skill metadata. You must:
@@ -481,66 +461,38 @@ class _AIClient:
             """
         ).strip()
 
-        controlled = {f: taxonomy[f]["values"] for f in requested_fields}
-        kinds = {f: taxonomy[f]["kind"] for f in requested_fields}
-        user: dict = {
+        controlled = {f: taxonomy[f]["values"] for f in missing_fields}
+        kinds = {f: taxonomy[f]["kind"] for f in missing_fields}
+        user = {
             "skill_path": skill.path,
             "skill_name": skill.name,
             "skill_description": skill.description,
             "skill_frontmatter": skill.frontmatter,
             "component": component or {},
             "skill_card_excerpt": (skill.skill_card or "")[:4000],
-            "requested_fields": requested_fields,
+            "missing_fields": missing_fields,
             "controlled_values_per_field": controlled,
             "field_kinds": kinds,
-        }
-        if amend_mode:
-            user["existing_values"] = {
-                f: current_values.get(f) for f in requested_fields
-            }
-            user["mode"] = "amend"
-            user["instructions"] = (
-                "The skill's name and/or description has materially changed "
-                "since this metadata was assigned. Review each requested "
-                "field's existing value against the current skill content. "
-                "For each field, return either the existing value verbatim "
-                "(if it still fits the new content) or a different "
-                "controlled value (if the new content clearly warrants a "
-                "different choice). Prefer keeping the existing value; only "
-                "change a field when the new content makes a different "
-                "controlled value clearly more appropriate. Return one "
-                "string value per requested field. For multi-csv fields, "
-                "use 1-5 values joined by commas with no spaces, ordered "
-                "most-relevant first. Do not invent values, do not return "
-                "arrays, do not return extra keys, do not include "
-                "explanations."
-            )
-        else:
-            user["mode"] = "fill"
-            user["instructions"] = (
+            "instructions": (
                 "Choose values from controlled_values_per_field. For "
                 "multi-csv fields, choose 1-5 most-applicable values, joined "
                 "by commas with no spaces, ordered most-relevant first. Do "
                 "not invent values, do not return arrays, do not return "
                 "extra keys, do not include explanations."
-            )
+            ),
+        }
 
-        # `temperature` is intentionally omitted: this is a strict
-        # controlled-vocabulary classification task constrained by
-        # response_format=json_object plus a small per-field enum, so the
-        # model's default temperature is fine, and omitting the field keeps
-        # us compatible with models (e.g. gpt-5.x) that reject any explicit
-        # value.
-        body: dict = {
+        body = {
             "model": self.model,
             "messages": [
                 {"role": "system", "content": system},
                 {
                     "role": "user",
-                    "content": json.dumps(user, ensure_ascii=False, default=str),
+                    "content": json.dumps(user, ensure_ascii=False),
                 },
             ],
             "max_tokens": 512,
+            "temperature": 0,
             "response_format": {"type": "json_object"},
         }
 
@@ -552,55 +504,15 @@ class _AIClient:
                 "AI enrichment needed but `requests` is not installed."
             ) from exc
 
-        headers = {
-            "Content-Type": "application/json",
-            "Authorization": f"Bearer {self.api_key}",
-        }
-        last_error: str = ""
-        for attempt in range(_RETRY_ATTEMPTS + 1):
-            try:
-                resp = requests.post(
-                    self.api_url,
-                    headers=headers,
-                    json=body,
-                    timeout=60,
-                )
-            except requests.Timeout:
-                last_error = "request timed out"
-                if attempt < _RETRY_ATTEMPTS:
-                    time.sleep(_RETRY_BASE_SECONDS * (2 ** attempt))
-                    continue
-                raise EnrichmentError(
-                    f"Inference API timed out after {_RETRY_ATTEMPTS + 1} attempts."
-                )
-            except requests.ConnectionError as exc:
-                last_error = str(exc)
-                if attempt < _RETRY_ATTEMPTS:
-                    time.sleep(_RETRY_BASE_SECONDS * (2 ** attempt))
-                    continue
-                raise EnrichmentError(
-                    f"Inference API connection failed after {_RETRY_ATTEMPTS + 1} attempts: {exc}"
-                )
-
-            # Retry on rate-limit (429) and transient server errors (5xx).
-            if resp.status_code == 429 or resp.status_code >= 500:
-                last_error = f"HTTP {resp.status_code}"
-                if attempt < _RETRY_ATTEMPTS:
-                    wait = _RETRY_BASE_SECONDS * (2 ** attempt)
-                    print(
-                        f"  [retry {attempt + 1}/{_RETRY_ATTEMPTS}] "
-                        f"API returned {resp.status_code} for {skill.path}; "
-                        f"retrying in {wait}s…",
-                        file=sys.stderr,
-                    )
-                    time.sleep(wait)
-                    continue
-                raise EnrichmentError(
-                    f"Inference API returned HTTP {resp.status_code} after "
-                    f"{_RETRY_ATTEMPTS + 1} attempts: {resp.text[:500]}"
-                )
-            break  # success or a non-retryable error code
-
+        resp = requests.post(
+            self.api_url,
+            headers={
+                "Content-Type": "application/json",
+                "Authorization": f"Bearer {self.api_key}",
+            },
+            json=body,
+            timeout=60,
+        )
         if resp.status_code != 200:
             raise EnrichmentError(
                 f"Inference API returned HTTP {resp.status_code}: {resp.text[:500]}"
@@ -616,12 +528,12 @@ class _AIClient:
         if not isinstance(obj, dict):
             raise EnrichmentError("Inference API JSON is not an object.")
 
-        unexpected = set(obj.keys()) - set(requested_fields)
+        unexpected = set(obj.keys()) - set(missing_fields)
         if unexpected:
             raise EnrichmentError(
                 f"Inference API returned unexpected keys: {sorted(unexpected)}"
             )
-        for f in requested_fields:
+        for f in missing_fields:
             if f not in obj or not isinstance(obj[f], str) or not obj[f]:
                 raise EnrichmentError(
                     f"Inference API did not return a usable string for `{f}`."
@@ -660,8 +572,7 @@ def build_skill_entry(
     schema_validator: Draft202012Validator,
     taxonomy: dict,
     ai_client,
-    skill_warnings: list[str],
-    is_materially_changed: bool = False,
+    errors: list[str],
 ) -> dict | None:
     component = components.get(skill.path)
 
@@ -679,7 +590,7 @@ def build_skill_entry(
     missing = missing_required_fields(metadata)
     if missing:
         if ai_client is None:
-            skill_warnings.append(
+            errors.append(
                 f"{skill.path}: missing required fields {missing}; AI enrichment "
                 f"is disabled (--no-ai)."
             )
@@ -687,29 +598,10 @@ def build_skill_entry(
         try:
             enrichment = ai_client(skill, component, missing, taxonomy)
         except EnrichmentError as exc:
-            skill_warnings.append(f"{skill.path}: {exc}")
+            errors.append(f"{skill.path}: {exc}")
             return None
         for k in missing:
             metadata[k] = enrichment[k]
-    elif is_materially_changed and ai_client is not None:
-        # Skill name/description changed but all required fields already have
-        # valid values. Ask the AI whether any of those values should be
-        # amended to better fit the new content. If AI returns the same value
-        # for a field, output stays byte-stable.
-        try:
-            amended = ai_client(
-                skill,
-                component,
-                list(MVP_FIELDS),
-                taxonomy,
-                current_values=metadata,
-            )
-        except EnrichmentError as exc:
-            skill_warnings.append(f"{skill.path}: {exc}")
-            return None
-        for k in MVP_FIELDS:
-            if amended.get(k):
-                metadata[k] = amended[k]
 
     # Re-order to schema field order.
     ordered_metadata = {k: metadata[k] for k in MVP_FIELDS if k in metadata}
@@ -743,9 +635,14 @@ def build_skills_sh(metadata: dict, subdomains: dict) -> dict:
     for slug, skills in groups.items():
         groups[slug] = sorted(skills)
 
-    # Emit groups in the order defined in skills-subdomains.json.
+    # Alphabetical order by group title.
+    title_sorted = sorted(
+        sub_map.keys(),
+        key=lambda s: sub_map[s]["title"].lower(),
+    )
+
     out_groups = []
-    for slug in sub_map.keys():
+    for slug in title_sorted:
         if not groups[slug]:
             continue
         out_groups.append(
@@ -793,15 +690,13 @@ def validate_inventory_round_trip(
     metadata_obj: dict,
     skills_sh_obj: dict,
     errors: list[str],
-    skipped_paths: set[str] | None = None,
 ) -> None:
     md_paths = {e["path"] for e in metadata_obj["skills"]}
     md_names = {e["name"] for e in metadata_obj["skills"]}
     found_paths = {s.path for s in skills_now}
     found_names = {s.name for s in skills_now}
-    skipped = skipped_paths or set()
 
-    for missing_path in sorted(found_paths - md_paths - skipped):
+    for missing_path in sorted(found_paths - md_paths):
         errors.append(f"metadata.json: missing entry for {missing_path}.")
     for stale_path in sorted(md_paths - found_paths):
         errors.append(
@@ -899,9 +794,7 @@ def main(argv: list[str] | None = None) -> int:
     ai_client = build_ai_client(allow_ai=not args.no_ai)
 
     errors: list[str] = []
-    skill_warnings: list[str] = []
     entries: list[dict] = []
-    materially_changed = set(cls.materially_changed)
     for skill in sorted(skills_now, key=lambda s: s.path):
         entry = build_skill_entry(
             skill,
@@ -911,8 +804,7 @@ def main(argv: list[str] | None = None) -> int:
             metadata_validator,
             taxonomy,
             ai_client,
-            skill_warnings,
-            is_materially_changed=skill.path in materially_changed,
+            errors,
         )
         if entry is not None:
             entries.append(entry)
@@ -938,8 +830,7 @@ def main(argv: list[str] | None = None) -> int:
             skills_sh_obj, skills_sh_validator, "skills.sh.json", errors
         )
         validate_skills_sh_uniqueness(skills_sh_obj, errors)
-        skipped_paths = {s.path for s in skills_now if s.path not in {e["path"] for e in entries}}
-        validate_inventory_round_trip(skills_now, metadata_obj, skills_sh_obj, errors, skipped_paths=skipped_paths)
+        validate_inventory_round_trip(skills_now, metadata_obj, skills_sh_obj, errors)
 
     if errors:
         print("VALIDATION FAILED:", file=sys.stderr)
@@ -986,23 +877,6 @@ def main(argv: list[str] | None = None) -> int:
         f"skills.sh.json: {'updated' if sh_changed else 'unchanged'} "
         f"({len(skills_sh_obj.get('groupings', []))} non-empty groups)"
     )
-
-    if skill_warnings:
-        print(
-            f"\nPARTIAL SUCCESS: {len(skill_warnings)} skill(s) could not be enriched "
-            f"and were excluded from output:",
-            file=sys.stderr,
-        )
-        for w in skill_warnings:
-            print(f"  - {w}", file=sys.stderr)
-        # Write a structured warnings file for CI to surface in issue bodies.
-        warnings_path = Path("/tmp/skill-warnings.json")
-        warnings_path.write_text(
-            json.dumps({"omitted_skills": skill_warnings}, indent=2) + "\n",
-            encoding="utf-8",
-        )
-        return 1
-
     return 0
 
 
