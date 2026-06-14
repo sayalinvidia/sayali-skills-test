@@ -1,5 +1,5 @@
 ## Description: <br>
-Deploy, operate, and integrate the VSS 3.2 GA RT-Embed Video Embedding microservice. <br>
+Use this skill when deploying, operating, or integrating the VSS 3.2 GA RT-Embed Video Embedding microservice. <br>
 
 This skill is ready for commercial/non-commercial use. <br>
 
@@ -9,7 +9,7 @@ NVIDIA <br>
 ### License/Terms of Use: <br>
 Apache 2.0 OR MIT <br>
 ## Use Case: <br>
-Developers and engineers deploying the VSS Video Embedding microservice to generate video and text embeddings for video search, retrieval, and analytics pipelines. <br>
+Developers and engineers deploying, operating, or integrating the NVIDIA VSS Video Embedding (RT-Embed) microservice for video and text embedding generation in AI-powered video analytics applications. <br>
 
 ### Deployment Geography for Use: <br>
 Global <br>
@@ -21,12 +21,11 @@ Mitigation: Review and scan skill before deployment. <br>
 ## Reference(s): <br>
 - [Deployment Reference](references/deploy-vss-deploy-video-embedding.md) <br>
 - [Integration Reference](references/integrate-vss-deploy-video-embedding.md) <br>
-- [REST API Reference](references/rest-api.md) <br>
-- [Environment Reference](references/environment.md) <br>
+- [REST API Catalog](references/rest-api.md) <br>
+- [Environment Variable Matrix](references/environment.md) <br>
 - [Troubleshooting](references/troubleshooting.md) <br>
 - [GitHub Repository](https://github.com/NVIDIA-AI-Blueprints/video-search-and-summarization) <br>
-- [NVIDIA Build Experience](https://build.nvidia.com/nvidia/video-search-and-summarization) <br>
-- [Cosmos-Embed1-448p Model Card](https://huggingface.co/nvidia/Cosmos-Embed1-448p) <br>
+- [NVIDIA VSS Documentation](https://docs.nvidia.com/vss/latest/index.html) <br>
 
 
 ## Skill Output: <br>
@@ -36,13 +35,13 @@ Mitigation: Review and scan skill before deployment. <br>
 **Other Properties Related to Output:** [None] <br>
 
 ## Evaluation Agents Used: <br>
-- Claude Code (`claude-code`) <br>
-- Codex (`codex`) <br>
+- `claude-code` <br>
+- `codex` <br>
 
 
 
 ## Evaluation Tasks: <br>
-Evaluated against 1 evaluation task with 2 attempts per task via NVSkills-Eval (external profile, local environment). Pass threshold: 50%. <br>
+2 evaluation tasks (2 positive skill-activation tasks, 0 negative tasks) via NVSkills-Eval external profile in astra-sandbox environment. <br>
 
 ## Evaluation Metrics Used: <br>
 Reported benchmark dimensions: <br>
@@ -67,10 +66,10 @@ Underlying evaluation signals used in this run: <br>
 | Dimension | Num | `claude-code` | `codex` |
 |---|---:|---:|---:|
 | Security | 2 | 100% (+0%) | 100% (+0%) |
-| Correctness | 2 | 100% (+0%) | 97% (+5%) |
-| Discoverability | 2 | 100% (+0%) | 84% (+5%) |
-| Effectiveness | 2 | 78% (+2%) | 76% (+4%) |
-| Efficiency | 2 | 93% (-0%) | 78% (-0%) |
+| Correctness | 2 | 50% (+50%) | 50% (+50%) |
+| Discoverability | 2 | 0% (+0%) | 0% (+0%) |
+| Effectiveness | 2 | 92% (+80%) | 84% (+66%) |
+| Efficiency | 2 | 27% (-0%) | 28% (-0%) |
 
 ## Skill Version(s): <br>
 3.2.0 (source: frontmatter) <br>
