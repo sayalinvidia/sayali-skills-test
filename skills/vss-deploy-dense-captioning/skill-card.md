@@ -1,5 +1,5 @@
 ## Description: <br>
-Use to deploy standalone RT-VLM dense captioning and call its REST API (uploads, captions, streams, chat-completions, Kafka). <br>
+Use this skill when deploying standalone RT-VLM dense captioning or calling its REST API (uploads, captions, streams, chat-completions, Kafka). <br>
 
 This skill is ready for commercial/non-commercial use. <br>
 
@@ -7,9 +7,9 @@ This skill is ready for commercial/non-commercial use. <br>
 NVIDIA <br>
 
 ### License/Terms of Use: <br>
-Apache 2.0 <br>
+Apache-2.0 <br>
 ## Use Case: <br>
-Developers and engineers deploying and operating the standalone RT-VLM dense captioning microservice to generate VLM-powered captions and alerts for video files and RTSP live streams. <br>
+Developers and engineers deploying the NVIDIA RT-VLM dense-captioning microservice as a standalone service and exercising its REST API for video upload, caption generation, RTSP stream management, and chat completions. <br>
 
 ### Deployment Geography for Use: <br>
 Global <br>
@@ -20,13 +20,14 @@ Mitigation: Review and scan skill before deployment. <br>
 
 ## Reference(s): <br>
 - [RT-VLM API Reference](https://docs.nvidia.com/vss/latest/real-time-vlm-api.html) <br>
+- [Video Search and Summarization Blueprint](https://github.com/NVIDIA-AI-Blueprints/video-search-and-summarization) <br>
+- [API Surface (26.05)](references/api-surface-26.05.md) <br>
 - [Deploy RT-VLM Service](references/deploy-rt-vlm-service.md) <br>
 - [Kafka Workflows](references/kafka-workflows.md) <br>
-- [VSS GitHub Repository](https://github.com/NVIDIA-AI-Blueprints/video-search-and-summarization) <br>
 
 
 ## Skill Output: <br>
-**Output Type(s):** [Shell commands, API Calls, Configuration instructions] <br>
+**Output Type(s):** [Shell commands, Configuration instructions, API Calls] <br>
 **Output Format:** [Markdown with inline bash code blocks] <br>
 **Output Parameters:** [1D] <br>
 **Other Properties Related to Output:** [None] <br>
@@ -38,7 +39,7 @@ Mitigation: Review and scan skill before deployment. <br>
 
 
 ## Evaluation Tasks: <br>
-Evaluated against 1 evaluation task with 2 attempts per task (pass threshold: 50%). <br>
+Evaluated against 2 evaluation tasks (2 positive skill-activation cases) using the NVSkills-Eval external profile in an astra-sandbox environment with 2 attempts per task. <br>
 
 ## Evaluation Metrics Used: <br>
 Reported benchmark dimensions: <br>
@@ -62,11 +63,11 @@ Underlying evaluation signals used in this run: <br>
 ## Evaluation Results: <br>
 | Dimension | Num | `claude-code` | `codex` |
 |---|---:|---:|---:|
-| Security | 2 | 100% (+0%) | 100% (+0%) |
-| Correctness | 2 | 100% (+0%) | 88% (+6%) |
-| Discoverability | 2 | 100% (+0%) | 62% (+19%) |
-| Effectiveness | 2 | 97% (+4%) | 100% (+0%) |
-| Efficiency | 2 | 93% (-0%) | 61% (+17%) |
+| Security | 4 | 25% (-25%) | 62% (+38%) |
+| Correctness | 4 | 90% (+8%) | 92% (+21%) |
+| Discoverability | 4 | 84% (+9%) | 63% (+7%) |
+| Effectiveness | 4 | 65% (+14%) | 57% (+19%) |
+| Efficiency | 4 | 66% (+8%) | 46% (+10%) |
 
 ## Skill Version(s): <br>
 3.2.0 (source: frontmatter) <br>
