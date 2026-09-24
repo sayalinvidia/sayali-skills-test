@@ -1,4 +1,8 @@
 #!/usr/bin/env bash
+
+# SPDX-FileCopyrightText: Copyright (c) 2026 NVIDIA CORPORATION & AFFILIATES. All rights reserved.
+# SPDX-License-Identifier: Apache-2.0
+
 # Shared endpoint + worker utilities for VDA scripts.
 
 make_auth_header() {
@@ -216,6 +220,34 @@ find_first_video_or_fail() {
         echo "Hint: ${hint}" >&2
     fi
     exit 1
+}
+
+load_setup_env_or_fail() {
+    local setup_dir="${1:-}"
+    local env_file=""
+
+    if [ -z "${setup_dir}" ]; then
+        echo "ERROR: SETUP_DIR is empty; cannot resolve runtime environment file." >&2
+        exit 1
+    fi
+    if [ ! -d "${setup_dir}" ]; then
+        echo "ERROR: SETUP_DIR does not exist: ${setup_dir}" >&2
+        exit 1
+    fi
+
+    if [ -f "${setup_dir}/.env" ]; then
+        env_file="${setup_dir}/.env"
+    elif [ -f "${setup_dir}/runtime.env" ]; then
+        env_file="${setup_dir}/runtime.env"
+    else
+        echo "ERROR: setup environment file missing in ${setup_dir}." >&2
+        echo "Expected one of: .env or runtime.env" >&2
+        ls -la "${setup_dir}" >&2 || true
+        exit 1
+    fi
+
+    # shellcheck disable=SC1090
+    set -a; source "${env_file}"; set +a
 }
 
 # Within-group rendezvous used at the end of each worker stage. Rank 0 holds the
