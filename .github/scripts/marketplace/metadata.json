@@ -1095,7 +1095,7 @@
     {
       "path": "skills/nemoclaw-user-reference",
       "name": "nemoclaw-user-reference",
-      "description": "Describes the NemoClaw integration layer and blueprint architecture and how they orchestrate compatible agent sandboxes. Use when looking up architecture, agent integration, plugin structure, or blueprint design. Trigger keywords - nemoclaw architecture, nemoclaw agent architecture, nemoclaw plugin blueprint structure, nemoclaw vs openshell, which cli, nemoclaw cli, openshell cli, sandbox commands, nemoclaw cli commands, nemoclaw command reference, nemoclaw network policy, sandbox egress control operator approval, nemoclaw troubleshooting, nemoclaw debug sandbox issues.",
+      "description": "Describes the NemoClaw plugin and blueprint architecture and how they orchestrate the OpenClaw sandbox. Use when looking up architecture, plugin structure, or blueprint design. Trigger keywords - nemoclaw architecture, nemoclaw plugin blueprint structure, nemoclaw vs openshell, which cli, nemoclaw cli, openshell cli, sandbox commands, nemoclaw cli commands, nemoclaw command reference, nemoclaw network policy, sandbox egress control operator approval, nemoclaw troubleshooting, nemoclaw debug sandbox issues.",
       "metadata": {
         "product.primary": "NeMoClaw",
         "classification.category.primary": "ai_and_machine_learning",
@@ -1414,6 +1414,186 @@
         "catalog.subdomain": "gpu-development",
         "audience": "developer,hpc_developer",
         "discovery.activity_tags": "extend,integrate,test,benchmark,validate"
+      }
+    },
+    {
+      "path": "skills/vss-ask-video",
+      "name": "vss-ask-video",
+      "description": "Use to ask the VSS agent's video_understanding tool a fresh visual question about a recorded clip. Not for prior tool output, search hits, or metadata-answerable questions.",
+      "metadata": {
+        "product.primary": "Video Search and Summarization (VSS)",
+        "classification.category.primary": "ai_and_machine_learning",
+        "catalog.subdomain": "vision-ai",
+        "audience": "application_developer,ai_engineer,ml_engineer,solutions_architect,developer",
+        "discovery.activity_tags": "inference,inspect,extract,summarize,integrate"
+      }
+    },
+    {
+      "path": "skills/vss-deploy-dense-captioning",
+      "name": "vss-deploy-dense-captioning",
+      "description": "Use this skill when deploying standalone RT-VLM dense captioning or calling its REST API (uploads, captions, streams, chat-completions, Kafka). Not for VSS profile deploy or video-search ingestion.",
+      "metadata": {
+        "product.primary": "Video Search and Summarization (VSS)",
+        "classification.category.primary": "ai_and_machine_learning",
+        "catalog.subdomain": "vision-ai",
+        "audience": "application_developer,devops_engineer,platform_engineer,ai_engineer,ml_engineer",
+        "discovery.activity_tags": "deploy,inference,operate,integrate,configure"
+      }
+    },
+    {
+      "path": "skills/vss-deploy-detection-tracking-2d",
+      "name": "vss-deploy-detection-tracking-2d",
+      "description": "Use to deploy, run, debug, or tear down the RTVI-CV 2D detection / tracking microservice and call its REST API. Not for VLM, embedding, or analytics — use the matching vss-* skill.",
+      "metadata": {
+        "product.primary": "Video Search and Summarization (VSS)",
+        "classification.category.primary": "ai_and_machine_learning",
+        "catalog.subdomain": "vision-ai",
+        "audience": "application_developer,devops_engineer,platform_engineer,ai_engineer",
+        "discovery.activity_tags": "deploy,operate,debug,configure,integrate"
+      }
+    },
+    {
+      "path": "skills/vss-deploy-detection-tracking-3d",
+      "name": "vss-deploy-detection-tracking-3d",
+      "description": "Deploy and operate the RTVI-CV-3D stack (also known as MV3DT, Multi-View 3D Tracking, or RTVI-CV-MV3DT) — per-camera DeepStream perception plus BEV Fusion over multiple calibrated cameras. Applies to requests such as \"deploy RTVI-CV-3D\", \"deploy rtvi-cv-3d\", \"deploy MV3DT\", \"deploy multi-view 3D tracking\", \"deploy rtvi-cv-mv3dt\", \"enable multi-camera tracking\", \"enable multi camera tracking\", \"set up multi-camera tracking\", \"multi-camera tracking\", \"run RTVI-CV-3D on my videos\", \"run MV3DT on my videos\", \"run RTVI-CV-3D / MV3DT on RTSP\", \"run on the sample dataset\", \"set up 3D tracking\", or provides a 4-camera warehouse video/RTSP set. Routes between sample-data, custom-videos, and custom-RTSP flows; auto-chains to `vss-generate-video-calibration` when calibration data is missing. Not for the full warehouse blueprint with agents / LLM / VLM (use `vss-deploy-profile`) or 2D single-camera detection (use `vss-deploy-detection-tracking-2d`).\n",
+      "metadata": {
+        "product.primary": "Video Search and Summarization (VSS)",
+        "classification.category.primary": "ai_and_machine_learning",
+        "catalog.subdomain": "vision-ai",
+        "audience": "application_developer,solutions_architect,devops_engineer,ai_engineer",
+        "discovery.activity_tags": "deploy,operate,configure,validate,troubleshoot"
+      }
+    },
+    {
+      "path": "skills/vss-deploy-profile",
+      "name": "vss-deploy-profile",
+      "description": "Use to select, configure, deploy, verify, debug, or tear down a VSS profile (base, search, lvs, warehouse, edge). Not for standalone microservices — use the vss-deploy-* skill.",
+      "metadata": {
+        "product.primary": "Video Search and Summarization (VSS)",
+        "classification.category.primary": "ai_and_machine_learning",
+        "catalog.subdomain": "vision-ai",
+        "audience": "devops_engineer,platform_engineer,solutions_architect,application_developer,ai_engineer",
+        "discovery.activity_tags": "deploy,configure,validate,debug,select"
+      }
+    },
+    {
+      "path": "skills/vss-deploy-video-embedding",
+      "name": "vss-deploy-video-embedding",
+      "description": "Deploy, operate, and integrate the VSS 3.2 GA RT-Embed Video Embedding microservice. Covers Docker Compose bring-up, GPU and storage prerequisites, the `/v1` REST API (file uploads, text and video embeddings, live RTSP streams, health and metrics), Redis/Kafka/OTel integration, common failure modes, and teardown.\n",
+      "metadata": {
+        "product.primary": "Video Search and Summarization (VSS)",
+        "classification.category.primary": "ai_and_machine_learning",
+        "catalog.subdomain": "vision-ai",
+        "audience": "devops_engineer,platform_engineer,application_developer,ai_engineer",
+        "discovery.activity_tags": "deploy,integrate,operate,configure,troubleshoot"
+      }
+    },
+    {
+      "path": "skills/vss-generate-video-calibration",
+      "name": "vss-generate-video-calibration",
+      "description": "Use to run AutoMagicCalib on local MP4s, RTSP, or the bundled sample dataset, and to deploy vss-auto-calibration when needed. Not for non-AMC calibration or runtime analytics.",
+      "metadata": {
+        "product.primary": "Video Search and Summarization (VSS)",
+        "classification.category.primary": "ai_and_machine_learning",
+        "catalog.subdomain": "vision-ai",
+        "audience": "application_developer,devops_engineer,solutions_architect,ai_engineer",
+        "discovery.activity_tags": "deploy,configure,operate,generate,validate"
+      }
+    },
+    {
+      "path": "skills/vss-generate-video-report",
+      "name": "vss-generate-video-report",
+      "description": "Use this skill when producing a VSS analysis report — Mode A per-clip VLM, Mode B incident-range via video-analytics. Not for real-time alerts or ad-hoc Q&A.",
+      "metadata": {
+        "product.primary": "Video Search and Summarization (VSS)",
+        "classification.category.primary": "ai_and_machine_learning",
+        "catalog.subdomain": "vision-ai",
+        "audience": "application_developer,ai_engineer,solutions_architect,ml_engineer",
+        "discovery.activity_tags": "generate,summarize,inference,extract,inspect"
+      }
+    },
+    {
+      "path": "skills/vss-manage-alerts",
+      "name": "vss-manage-alerts",
+      "description": "Use for VSS alert workflows — real-time monitoring, Alert-Bridge subscriptions, Slack notifications, incident queries, camera onboarding. Not for non-alert analytics.",
+      "metadata": {
+        "product.primary": "Video Search and Summarization (VSS)",
+        "classification.category.primary": "ai_and_machine_learning",
+        "catalog.subdomain": "vision-ai",
+        "audience": "devops_engineer,application_developer,platform_engineer,ai_engineer,it_operations",
+        "discovery.activity_tags": "operate,monitor,configure,integrate,deploy"
+      }
+    },
+    {
+      "path": "skills/vss-manage-video-io-storage",
+      "name": "vss-manage-video-io-storage",
+      "description": "Use to call the VIOS REST API (sensor list, timelines, clip extraction, snapshots, add/delete sensors and streams). Not for VLM inference or search.",
+      "metadata": {
+        "product.primary": "Video Search and Summarization (VSS)",
+        "classification.category.primary": "ai_and_machine_learning",
+        "catalog.subdomain": "vision-ai",
+        "audience": "application_developer,devops_engineer,platform_engineer,solutions_architect,it_operations",
+        "discovery.activity_tags": "operate,integrate,configure,extract,inspect"
+      }
+    },
+    {
+      "path": "skills/vss-query-analytics",
+      "name": "vss-query-analytics",
+      "description": "Use this skill when reading video-analytics metrics, incidents, alerts, and sensor data via the VA-MCP server (port 9901). Not for live VLM or incident-range narrative reports.",
+      "metadata": {
+        "product.primary": "Video Search and Summarization (VSS)",
+        "classification.category.primary": "ai_and_machine_learning",
+        "catalog.subdomain": "vision-ai",
+        "audience": "application_developer,ai_engineer,solutions_architect,developer",
+        "discovery.activity_tags": "monitor,inspect,extract,operate"
+      }
+    },
+    {
+      "path": "skills/vss-search-archive",
+      "name": "vss-search-archive",
+      "description": "Use to run top-level VSS fusion search on archived video, or to ingest video files / RTSP streams for search. Not for ad-hoc Q&A or live captioning.",
+      "metadata": {
+        "product.primary": "Video Search and Summarization (VSS)",
+        "classification.category.primary": "ai_and_machine_learning",
+        "catalog.subdomain": "vision-ai",
+        "audience": "application_developer,ai_engineer,ml_engineer,solutions_architect,developer",
+        "discovery.activity_tags": "operate,inference,extract,integrate,configure"
+      }
+    },
+    {
+      "path": "skills/vss-setup-behavior-analytics",
+      "name": "vss-setup-behavior-analytics",
+      "description": "Use to deploy the vss-behavior-analytics service standalone (entrypoint, config-source, optional calibration). Not for the full warehouse deploy.",
+      "metadata": {
+        "product.primary": "Video Search and Summarization (VSS)",
+        "classification.category.primary": "ai_and_machine_learning",
+        "catalog.subdomain": "vision-ai",
+        "audience": "application_developer,devops_engineer,platform_engineer,solutions_architect,ai_engineer",
+        "discovery.activity_tags": "deploy,configure,operate,integrate"
+      }
+    },
+    {
+      "path": "skills/vss-setup-video-analytics-api",
+      "name": "vss-setup-video-analytics-api",
+      "description": "Use to deploy the vss-video-analytics-api REST service standalone (config-source, data-log bind, Elasticsearch, optional Kafka). Not for full warehouse deploy.",
+      "metadata": {
+        "product.primary": "Video Search and Summarization (VSS)",
+        "classification.category.primary": "ai_and_machine_learning",
+        "catalog.subdomain": "vision-ai",
+        "audience": "devops_engineer,platform_engineer,application_developer,solutions_architect",
+        "discovery.activity_tags": "deploy,configure,integrate,operate"
+      }
+    },
+    {
+      "path": "skills/vss-summarize-video",
+      "name": "vss-summarize-video",
+      "description": "Use to summarize a recorded video via the LVS summarization microservice (HITL-gated) with a VLM fallback. Not for live RTSP captioning or incident-range reports.",
+      "metadata": {
+        "product.primary": "Video Search and Summarization (VSS)",
+        "classification.category.primary": "ai_and_machine_learning",
+        "catalog.subdomain": "vision-ai",
+        "audience": "application_developer,ai_engineer,ml_engineer,solutions_architect,developer",
+        "discovery.activity_tags": "summarize,synthesize,inference,integrate,deploy"
       }
     }
   ]

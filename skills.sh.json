@@ -57,7 +57,22 @@
         "nv-reason-cxr",
         "nv-segment-ct",
         "nv-segment-ct-finetune",
-        "nv-segment-ctmr"
+        "nv-segment-ctmr",
+        "vss-ask-video",
+        "vss-deploy-dense-captioning",
+        "vss-deploy-detection-tracking-2d",
+        "vss-deploy-detection-tracking-3d",
+        "vss-deploy-profile",
+        "vss-deploy-video-embedding",
+        "vss-generate-video-calibration",
+        "vss-generate-video-report",
+        "vss-manage-alerts",
+        "vss-manage-video-io-storage",
+        "vss-query-analytics",
+        "vss-search-archive",
+        "vss-setup-behavior-analytics",
+        "vss-setup-video-analytics-api",
+        "vss-summarize-video"
       ]
     },
     {
