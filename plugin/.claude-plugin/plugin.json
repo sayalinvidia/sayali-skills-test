@@ -1,0 +1,11 @@
+{
+  "name": "nvidia-demo",
+  "version": "1.0.0",
+  "description": "DEMO plugin for the sync pipeline trial: two Jetson skills, a local docs MCP server and a session hook.",
+  "author": {"name": "NVIDIA"},
+  "homepage": "https://developer.nvidia.com/embedded/jetson",
+  "license": "Apache-2.0 AND CC-BY-4.0",
+  "keywords": ["nvidia", "jetson", "demo"],
+  "mcpServers": "./.mcp.json",
+  "hooks": "./hooks/hooks.json"
+}

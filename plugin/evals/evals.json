@@ -1,0 +1,7 @@
+{
+  "plugin": "nvidia-demo",
+  "tasks": [
+    {"id": "set-target-then-print", "prompt": "Point my Jetson tooling at an Orin Nano and show me the BSP version.", "expected_skills": ["jetson-set-target", "jetson-print-bsp-info"]},
+    {"id": "docs-via-mcp", "prompt": "Read the jetson-set-target skill through the plugin's docs server.", "expected_mcp": "nvidia-demo-docs"}
+  ]
+}

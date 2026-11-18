@@ -1,0 +1,9 @@
+{
+  "name": "nvidia-demo",
+  "version": "1.0.0",
+  "description": "DEMO plugin for the sync pipeline trial: two Jetson skills, a local docs MCP server and a session hook.",
+  "category": "Developer Tools",
+  "interface": {"displayName": "NVIDIA Demo", "shortDescription": "Jetson skills + docs MCP", "logo": "./assets/nvidia-demo.png"},
+  "skills": {"path": "./skills"},
+  "mcpServers": {"nvidia-demo-docs": {"command": "python3", "args": ["./mcp/demo_docs_server.py"]}}
+}
