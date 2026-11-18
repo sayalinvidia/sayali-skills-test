@@ -1,3 +1,3 @@
-# nvidia-demo
+# nvidia-tao
 
-Demo plugin used to exercise the plugin sync pipeline. Mirrors the layout in the proposal doc: manifests, plugin card, signature, evals, benchmark, assets, an MCP server, a hook and two bundled skills.
+TAO Toolkit plugin: bundled TAO skills with their evals, cards and signatures. Mirrored into the NVIDIA skills catalog by the plugin sync; install from the `nvidia-official` marketplace.

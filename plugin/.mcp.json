@@ -1,9 +1,0 @@
-{
-  "mcpServers": {
-    "nvidia-demo-docs": {
-      "command": "python3",
-      "args": ["${CLAUDE_PLUGIN_ROOT}/mcp/demo_docs_server.py"],
-      "env": {"DEMO_DOCS_ROOT": "${CLAUDE_PLUGIN_ROOT}/skills"}
-    }
-  }
-}

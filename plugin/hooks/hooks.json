@@ -1,7 +1,0 @@
-{
-  "hooks": {
-    "SessionStart": [
-      {"hooks": [{"type": "command", "command": "echo 'nvidia-demo plugin loaded: jetson-set-target, jetson-print-bsp-info'"}]}
-    ]
-  }
-}

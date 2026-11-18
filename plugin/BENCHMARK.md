@@ -1,10 +1,11 @@
-# nvidia-demo — plugin benchmark (DEMO)
+# nvidia-tao — plugin benchmark
 
-Tier 3 plugin-level result. Placeholder produced by hand for the sync trial; in production NVSkills CI writes this file.
+Tier 3 plugin-level result over `evals/evals.json`. Placeholder written by hand for the sync trial; in production NVSkills CI writes this file alongside `plugin.oms.sig`.
 
 | Task | Result |
 |------|--------|
-| set-target-then-print | pass |
-| docs-via-mcp | pass |
+| finetune-hf-model | pass |
+| run-in-docker | pass |
+| end-to-end | pass |
 
-2/2 tasks pass.
+3/3 tasks pass.

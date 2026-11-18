@@ -1,7 +1,7 @@
 {
-  "name": "nvidia-demo",
+  "name": "nvidia-tao",
   "version": "1.0.0",
-  "description": "DEMO plugin for the sync pipeline trial: two Jetson skills, a local docs MCP server and a session hook.",
+  "description": "Train, fine-tune, optimize, and export vision AI models with TAO. DEMO mirror for the plugin sync trial.",
   "author": {"name": "NVIDIA"},
   "license": "Apache-2.0 AND CC-BY-4.0"
 }
